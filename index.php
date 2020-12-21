@@ -1,1 +1,1 @@
-<?php header( 'Location: /views/dashboard.ejs' ) ;  ?>
+<?php header( 'Location: /index.js' ) ;  ?>
