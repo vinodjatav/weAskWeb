@@ -1,0 +1,138 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title>Story</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="Cache-Control" content="no-store" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="icon" href="../images/boat.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('.item').click(function () {
+                var obj = {
+                    storyTitle: this.innerText,
+                    storyId: this.id
+                }
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        var data = JSON.parse(this.responseText);
+                        console.log(data);
+                        $('#content').text(data[0].content);
+                        $('#totalLikes').text(data[0].votes);
+                        $('#like').css({'font-size':'50px'});
+                        if(data[0].username in data[0].voter){
+                            $('#like').css({ 'color': 'blue' });
+                        } else {
+                            $('#like').css({ 'color': 'black' });
+                        }
+                    } else {
+                        $('#content').text('Loading...');
+                        $('#totalLikes').text('');
+                        $('#like').css({'font-size':'0px'});
+                    }
+                };
+                xhr.open('POST', '/getStory', true);
+                xhr.setRequestHeader("Content-type", "application/json");
+                xhr.send(JSON.stringify(obj));
+            })
+
+            $('#like').click(function () {
+                console.log($(this).css("color"));
+                if ($(this).css("color") == 'rgb(0, 0, 0)') {
+                    $(this).css({ 'color': 'blue' });
+                    var x = $('#totalLikes').text();
+                    $('#totalLikes').text(parseInt(x)+1);
+                    var xhr = new XMLHttpRequest();
+                    var obj = {
+                        issue: "story"
+                    }
+                
+                    xhr.open('POST', '/upvote', true);
+                    xhr.setRequestHeader("Content-type", "application/json");
+                    xhr.send(JSON.stringify(obj));
+                }
+                else {
+                    $(this).css({ 'color': 'black' });
+                    var x = $('#totalLikes').text();
+                    $('#totalLikes').text(parseInt(x)-1);
+                    var xhr = new XMLHttpRequest();
+                    var obj = {
+                        issue: "story"
+                    }
+                    xhr.onreadystatechange = function () {
+                        if (this.readyState == 4 && this.status == 200) {
+
+                        }
+                    };
+                    xhr.open('POST', '/downvote', true);
+                    xhr.setRequestHeader("Content-type", "application/json");
+                    xhr.send(JSON.stringify(obj));
+                }
+            })
+        })
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row" style="background-color:grey; height: 40px;">
+            <div class="col-md4"></div>
+            <div class="col-md-4" style="text-align: center; padding-top: 5px;">
+                <a href="/dashboard" style="text-decoration:none;"><strong style="font-size: 20px">weAsk</strong></a>
+            </div>
+
+            <div class="col-md-4"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card border-dark mb-3" style="max-width: 18rem;">
+                    <div class="card-body text-dark" style="text-align: center;">
+                        <h5 class="card-title">Top Liked Stories</h5>
+                        <table class="table table-striped" style="text-align: center">
+                            <tbody>
+                                <% for(var i=0; i < story.length; i++) 
+                                    { %>
+                                <tr>
+                                    <td><a style="text-decoration: none;" class="item" id=<%= story[i]._id%>
+                                            href=#<%= story[i].topic %>><%= story[i].topic %></a></td>
+                                </tr>
+                                <%}	
+                                %>
+                                <tr>
+                                    <td><a href="/allStories" style="text-decoration: none;"><strong>... more Stories</strong></a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-9" style="background-color: cadetblue;">
+                <p id="content">Click on the stories you want to read</p>
+                <div style="text-align:start;" class="row">
+                    <div class="col-md-1">
+                        <p id="totalLikes" style="font-size: 35px;"></p>
+                    </div>
+                    <div class="col-md-2">
+                        <i id="like" style="font-size:0px; color: black;" class="fa fa-thumbs-up"></i>
+                    </div>
+                    
+                </div>
+            </div>
+
+        </div>
+    </div>
+    </div>
+</body>
+
+</html>

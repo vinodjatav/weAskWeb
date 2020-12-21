@@ -1,0 +1,193 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<title>weAsk</title>
+	<meta charset="utf-8" />
+	<meta http-equiv="Cache-Control" content="no-store" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="icon" href="../images/boat.png" type="image/x-icon">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<style>
+		.container-fluid {
+			padding-right: 0px;
+			padding-left: 0px;
+			margin-right: auto;
+			margin-left: auto;
+		}
+
+		body {
+			overflow-x: hidden;
+		}
+	</style>
+	<script>
+		$(document).ready(function () {
+			$('.ansButton').click(function () {
+				$(this).hide();
+				var myId = this.id;
+				myId += 'ansArea';
+				var txtArea = document.getElementById(myId);
+				txtArea.style.display = "block";
+
+				myId = this.id;
+				myId += 'saveAns';
+				console.log(myId);
+				var ansButt = document.getElementById(myId);
+				ansButt.style.display = "block";
+			})
+
+			$('#ques').click(function () {
+				$('#story').hide();
+				$('#question').show();
+			})
+			$('#st').click(function () {
+				$('#story').show();
+				$('#question').hide();
+			})
+		})
+	</script>
+</head>
+
+<body>
+	<div class="container-fluid">
+		<nav class="navbar navbar-expand-lg navbar-light bg-dark">
+			<a class="navbar-brand" href="/dashboard" style="color:chartreuse; font-size: 30px;"><strong>weAsk</strong></a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+				aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent" style="padding-right: 0%">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item active">
+						<a class="nav-link" href="/dashboard" style="color: crimson;">Home <span
+								class="sr-only">(current)</span></a>
+					</li>&nbsp;&nbsp;
+					
+					<li class="nav-item">
+						<a class="nav-link" href="/talktosomeone" style="color: crimson;">Chat To Someone</a>
+					</li>&nbsp;&nbsp;
+					<li class="nav-item">
+						<a class="nav-link" href="/profile" style="color: crimson;">Profile</a>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"style="font-size:35px; padding-top:19px; color: red;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						</a>
+						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						  <a class="dropdown-item" href="/settings">Settings</a>
+						  <a class="dropdown-item" href="/logout">Logout</a>
+					  </li>
+				</ul>
+			</div>
+		</nav>
+		<div class="row" style="position:relative;">
+			<div class="col-md-3">
+				<div>
+					<h3>Hello,<strong style="color: blueviolet;"><%= username %></strong></h3>
+					<p>Hope you are doing well.</p>
+				</div>
+
+				<div class="list-group" id="list-tab" role="tablist">
+					<a class="list-group-item list-group-item-action active" id="ques" data-toggle="list"
+						href="#list-messages" role="tab" aria-controls="messages"><strong>Ask a Question</strong></a>
+					<a class="list-group-item list-group-item-action" id="st" data-toggle="list" href="#list-settings"
+						role="tab" aria-controls="settings"><strong>Post a Story</strong></a>
+				</div>
+			</div>
+			<div class="col-md-9">
+				<form method="POST" action="/posting" id="question">
+					<label for="comment" style="font-size: 25px; font-style:oblique">Question:</label>
+					<textarea class="form-control" name="question" rows="5" spellcheck="false" style="border: 2px solid blue;" required></textarea>
+					<br>
+					<button id="post">Ask</button>
+				</form>
+				<form class="form" method="POST"  action="/storyPost" id="story" style="display: none;">
+					<label for="story" style="font-size: 25px; font-style:oblique">Story:</label>
+					<br>
+					<input type="text" placeholder=" Topic" name="topic" style="color: black; border: 2px solid blue;
+					border-radius: 2px;" required>
+					<br>
+					<br>
+					<textarea class="form-control" name="content" rows="5" spellcheck="false" style="border: 2px solid blue;" required></textarea>
+					<br>
+					<button id="post">Post</button>    
+				</form>
+				<br>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-3">
+				<div class="card border-dark mb-3">
+					<div class="card-body text-dark" style="text-align: center;">
+						<h5 class="card-title">Extras For You</h5>
+						<table class="table table-striped" style="text-align: center">
+							<tbody>
+								<tr>
+									<td><a href="/story">Stories</a></td>
+								</tr>
+								<tr>
+									<td><a href="/extras">Trending TV Shows</a></td>
+								</tr>
+								<tr>
+									<td><a href="/extras">Restraunts Near You</a></td>
+								</tr>
+								<tr>
+									<td><a href="/extras">Places to Visit</a></td>
+								</tr>
+								<tr>
+									<td><a href="/extras">Trending Movies</a></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-9">
+				<div class="allData">
+					<% for(var i=0; i < data.length; i++) { %>
+					<div class="card border-success mb-3">
+						<div class="card-header bg-transparent border-success"><%= data[i].questioner %></div>
+						<div class="card-body text-success">
+							<h5 class="card-title" style="color: darkred">Q. <strong
+									style="color: darkred;"><%= data[i].question %></strong></h5>
+							<% if(data[i].answer.length > 0){ %>
+							<% for(var j=0; j < data[i].answer.length; j++) { %>
+							<p style="color: black;"><strong
+									style="color: darkslateblue;"><%= data[i].answerer[j] %></strong>:&nbsp;<%= data[i].answer[j] %>
+							</p>
+							<% }
+									%>
+							<form method="POST" action="/answering">
+								<input style="display: none" type="text" name="questionId" value=<%= data[i]._id %>>
+								<textarea style="display: none" class="form-control" name="answer" rows="5"
+									spellcheck="false" required id=<%=i%>ansArea></textarea>
+								<input style="display: none" type="submit" name="saveButton" value="Save"
+									id=<%=i%>saveAns>
+							</form>
+							<% } else{ %>
+							<form method="POST" action="/answering">
+								<input style="display: none" type="text" name="questionId" value=<%= data[i]._id %>>
+								<textarea style="display: none" class=" form-control" name="answer" rows="5"
+									spellcheck="false" required id=<%=i%>ansArea></textarea>
+								<input style="display: none" type="submit" name="saveButton" value="Save"
+									id=<%=i%>saveAns>
+							</form>
+							<% } %>
+							<button class='ansButton' style="color: black;" id=<%=i%>>Write Your Answer</button>
+						</div>
+					</div>
+					<% } %>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+
+</html>
