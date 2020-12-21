@@ -1,7 +1,7 @@
 # weAsk
 An easy to use and deploy web app built using NodeJS and ExpressJS.
 
-Go to the Site at: https://weask.herokuapp.com
+Go to the Site at: https://weaskweb.herokuapp.com
 
 # Features:
 * Simple Web application, easy to use and *very* easy to deploy 
@@ -12,7 +12,7 @@ Go to the Site at: https://weask.herokuapp.com
 # Requirements:
 Clone the repository using the command:
 
-`git clone https://github.com/powerfist01/weAsk.git`  
+`git clone https://github.com/vinodjatav/weAskWeb.git`  
 
 Execute the following command to install the npm packages:<br />
 
